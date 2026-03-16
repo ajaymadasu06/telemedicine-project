@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Patient Portal</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+
+<div class="form-container">
+
+<h2>Patient Emergency Form</h2>
+
+<form action="/submit_patient" method="POST">
+
+<input type="text" name="name" placeholder="Patient Name" required>
+
+<input type="number" name="age" placeholder="Age" required>
+
+<input type="text" name="symptoms" placeholder="Symptoms" required>
+
+<textarea name="condition" placeholder="Detailed Condition"></textarea>
+
+<select name="status">
+<option value="Normal">Normal</option>
+<option value="Serious">Serious</option>
+<option value="Critical">Critical</option>
+</select>
+
+<select name="surgery">
+<option value="No">No</option>
+<option value="Yes">Yes</option>
+<option value="Not Sure">Not Sure</option>
+</select>
+
+<select name="ambulance_time">
+<option value="10 Minutes">10 Minutes</option>
+<option value="20 Minutes">20 Minutes</option>
+<option value="30 Minutes">30 Minutes</option>
+</select>
+
+<label>Emergency:</label>
+<select name="emergency">
+<option value="Yes">Yes</option>
+<option value="No">No</option>
+</select>
+
+<input type="date" name="date">
+
+<input type="time" name="time">
+
+<button type="submit">Send Patient Data</button>
+
+</form>
+
+<br>
+
+<a href="/">Go Back Home</a>
+
+</div>
+
+</body>
+</html>

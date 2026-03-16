@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Doctor Dashboard</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:40px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ccc;
+text-align:center;
+}
+
+th{
+background:#2c3e50;
+color:white;
+}
+
+/* Color alerts */
+
+.normal{
+background:#c8f7c5;
+}
+
+.serious{
+background:#fff3b0;
+}
+
+.critical{
+background:#ffb3b3;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Doctor Dashboard</h2>
+
+<a href="/logout">Logout</a>
+
+<table>
+
+<tr>
+<th>Name</th>
+<th>Age</th>
+<th>Symptoms</th>
+<th>Detailed Condition</th>
+<th>Emergency Level</th>
+<th>Surgery</th>
+<th>Ambulance ETA</th>
+<th>Date</th>
+<th>Time</th>
+<th>Action</th>
+</tr>
+
+{% for p in patients %}
+
+<tr class="
+{% if p['emergency']=='Critical' %}
+critical
+{% elif p['emergency']=='Serious' %}
+serious
+{% else %}
+normal
+{% endif %}
+">
+
+<td>{{ p['name'] }}</td>
+<td>{{ p['age'] }}</td>
+<td>{{ p['symptoms'] }}</td>
+<td>{{ p['condition'] }}</td>
+<td>{{ p['emergency'] }}</td>
+<td>{{ p['surgery'] }}</td>
+<td>{{ p['eta'] }}</td>
+<td>{{ p['date'] }}</td>
+<td>{{ p['time'] }}</td>
+
+<td>
+<a href="/delete/{{ p['id'] }}">Delete</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

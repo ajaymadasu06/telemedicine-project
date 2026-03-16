@@ -1,0 +1,315 @@
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 50px;
+background:#0f172a;
+}
+
+.navbar h2{
+color:white;
+}
+
+.navbar ul{
+list-style:none;
+display:flex;
+gap:25px;
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.navbar a:hover{
+color:#38bdf8;
+}
+
+/* HERO SECTION */
+
+.hero{
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+justify-content:center;
+background:linear-gradient(120deg,#2563eb,#06b6d4);
+color:white;
+padding:50px 20px;
+}
+
+.hero h1{
+font-size:36px;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:18px;
+max-width:650px;
+margin-bottom:30px;
+}
+
+/* BUTTON */
+
+.btn{
+padding:12px 30px;
+background:white;
+color:#2563eb;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.btn:hover{
+background:#e0f2fe;
+}
+
+/* SERVICES */
+
+.services{
+padding:60px 20px;
+text-align:center;
+background:#f1f5f9;
+}
+
+.services h2{
+font-size:32px;
+margin-bottom:40px;
+color:#0f172a;
+}
+
+/* CARDS */
+
+.cards{
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+}
+
+.card{
+background:white;
+padding:30px;
+width:260px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.15);
+text-align:center;
+transition:0.3s;
+text-decoration:none;
+color:black;
+}
+
+.card:hover{
+transform:translateY(-8px);
+}
+
+.card h3{
+margin-bottom:10px;
+color:#2563eb;
+}
+
+.card p{
+color:#555;
+}
+
+/* ABOUT SECTION */
+
+.about{
+padding:60px 20px;
+text-align:center;
+}
+
+.about h2{
+margin-bottom:20px;
+}
+
+/* FOOTER */
+
+.footer{
+text-align:center;
+padding:20px;
+background:#0f172a;
+color:white;
+margin-top:40px;
+}
+
+/* FORM CONTAINER */
+
+.form-container{
+width:400px;
+margin:60px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* FORM TITLE */
+
+.form-container h2{
+text-align:center;
+margin-bottom:20px;
+color:#2563eb;
+}
+
+/* INPUT FIELDS */
+
+.form-container input,
+.form-container textarea{
+width:100%;
+padding:10px;
+margin-bottom:15px;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+/* BUTTON */
+
+.form-container button{
+width:100%;
+padding:10px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:6px;
+font-size:16px;
+cursor:pointer;
+}
+
+.form-container button:hover{
+background:#1d4ed8;
+}
+
+/* TABLE FOR DOCTOR DASHBOARD */
+
+table{
+width:90%;
+margin:40px auto;
+border-collapse:collapse;
+background:white;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+th, td{
+padding:12px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+th{
+background:#2563eb;
+color:white;
+}
+
+tr:nth-child(even){
+background:#f2f2f2;
+}
+
+/* STATUS BUTTONS */
+
+.approve{
+background:green;
+color:white;
+padding:6px 10px;
+border-radius:5px;
+text-decoration:none;
+}
+
+.complete{
+background:orange;
+color:white;
+padding:6px 10px;
+border-radius:5px;
+text-decoration:none;
+}
+
+.delete{
+background:red;
+color:white;
+padding:6px 10px;
+border-radius:5px;
+text-decoration:none;
+}
+
+.form-container{
+width:400px;
+margin:60px auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+.form-container input,
+.form-container textarea,
+.form-container select{
+width:100%;
+padding:10px;
+margin-bottom:15px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.form-container button{
+width:100%;
+padding:10px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:6px;
+font-size:16px;
+cursor:pointer;
+}
+
+.form-container button:hover{
+background:#1d4ed8;
+}
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+padding:20px;
+}
+
+h2{
+color:#333;
+}
+
+table{
+background:white;
+border-collapse:collapse;
+width:100%;
+margin:20px auto;
+}
+
+th,td{
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#0077b6;
+color:white;
+}
+
+button{
+background:#0077b6;
+color:white;
+padding:10px;
+border:none;
+}
+
