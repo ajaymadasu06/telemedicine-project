@@ -1,25 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Doctor Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body style="text-align:center; padding-top:100px;">
+<body>
 
-<h2>Doctor Login</h2>
+<div class="form-container">
 
-<form action="/doctor_login" method="POST">
+    <h2>Doctor Login</h2>
 
-    <input type="text" name="username" placeholder="Username" required><br><br>
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
 
-    <input type="password" name="password" placeholder="Password" required><br><br>
+    <form action="/doctor_login" method="POST">
+        
+        <input type="text" name="username" placeholder="Username" required><br><br>
+        <!-- ✅ Fixed: was name="doctor", must match request.form['username'] in app.py -->
 
-    <button type="submit">Login</button>
+        <input type="password" name="password" placeholder="Password" required><br><br>
+        <!-- ✅ Fixed: was name="1234", must match request.form['password'] in app.py -->
 
-</form>
+        <button type="submit">Login</button>
 
-<br>
-<a href="/">Go Back Home</a>
+    </form>
+
+    <br>
+    <a href="/">Go Back Home</a>
+
+</div>
 
 </body>
 </html>

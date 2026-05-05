@@ -1,14 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Success</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">  <!-- ✅ Fixed: added missing CSS link -->
 </head>
-<body style="text-align:center; padding-top:100px;">
+<body>
 
-<h2>Registration Successful</h2>
-<p>Thank you {{ name }}. Your details have been saved.</p>
+<div class="form-container">
 
-<a href="/">Go Back Home</a>
+    <h2>Registration Successful</h2>
+
+    <p>Your Tracking ID:</p>
+    <h1 style="color:green;">{{ tracking_id }}</h1>
+
+    <p>Use this ID to check patient status later.</p>
+
+    <a href="/track">Track Patient</a>
+    <br><br>
+    <a href="/">Go Back Home</a>
+
+</div>
 
 </body>
 </html>

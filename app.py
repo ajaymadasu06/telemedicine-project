@@ -4,131 +4,141 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = "telemedicine_secret"
 
-
-# DATABASE CONNECTION
 def get_db():
     conn = sqlite3.connect("telemedicine.db")
     conn.row_factory = sqlite3.Row
     return conn
 
+def create_table():
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS patients (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            age INTEGER,
+            symptoms TEXT,
+            description TEXT,
+            condition TEXT,
+            surgery TEXT,
+            eta TEXT,
+            emergency TEXT,
+            date TEXT,
+            time TEXT,
+            doctor_reply TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
 
-# CREATE TABLE
-conn = sqlite3.connect("telemedicine.db")
-cursor = conn.cursor()
+create_table()
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS patients(
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT,
-age TEXT,
-symptoms TEXT,
-condition TEXT,
-emergency TEXT,
-surgery TEXT,
-eta TEXT,
-date TEXT,
-time TEXT
-)
-""")
-
-conn.commit()
-conn.close()
-
-
-# HOME
 @app.route('/')
 def home():
-    return render_template("home.html")
+    return render_template('home.html')
 
-
-# PATIENT PAGE
-@app.route('/patient')
+@app.route('/patient', methods=['GET', 'POST'])
 def patient():
-    return render_template("patient.html")
-
-
-# DOCTOR LOGIN
-@app.route('/doctor_login', methods=['GET','POST'])
-def doctor_login():
-
+    conn = get_db()
+    cursor = conn.cursor()
     if request.method == 'POST':
+        data = (
+            request.form['name'],
+            request.form['age'],
+            request.form['symptoms'],
+            request.form['description'],
+            request.form['condition'],
+            request.form['surgery'],
+            request.form['eta'],
+            request.form['emergency'],
+            request.form['date'],
+            request.form['time']
+        )
+        cursor.execute("""
+            INSERT INTO patients 
+            (name, age, symptoms, description, condition, surgery, eta, emergency, date, time)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, data)
+        conn.commit()
+        tracking_id = cursor.lastrowid
+        conn.close()
+        return render_template('success.html', tracking_id=tracking_id)
+    cursor.execute("SELECT * FROM patients ORDER BY id DESC")
+    patients = cursor.fetchall()
+    conn.close()
+    return render_template('patient.html', patients=patients)
 
-        username = request.form.get('username')
-        password = request.form.get('password')
+@app.route('/track', methods=['GET', 'POST'])
+def track():
+    if request.method == 'POST':
+        tracking_id = request.form.get('tracking_id', '').strip()
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM patients WHERE id = ?", (tracking_id,))
+        patient = cursor.fetchone()
+        conn.close()
+        if patient:
+            return render_template('patient_details.html', patient=patient)
+        else:
+            return render_template('track.html', error="No patient found with that ID.")
+    return render_template('track.html')
 
-        if username == "doctor" and password == "1234":
-            session['doctor_logged_in'] = True
+# ✅ Moved here - BEFORE app.run()
+@app.route('/patient_details')
+def patient_details():
+    return redirect('/track')
+
+@app.route('/doctor_login', methods=['GET', 'POST'])
+def doctor_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username == 'doctor' and password == '1234':
+            session['doctor'] = True
             return redirect('/doctor')
         else:
-            return "Invalid Login"
+            return render_template('doctor_login.html', error="Invalid credentials.")
+    return render_template('doctor_login.html')
 
-    return render_template("doctor_login.html")
-
-
-# SUBMIT PATIENT
-@app.route('/submit_patient', methods=['POST'])
-def submit_patient():
-
-    name = request.form.get('name')
-    age = request.form.get('age')
-    symptoms = request.form.get('symptoms')
-    condition = request.form.get('condition')
-    emergency = request.form.get('status')   # Normal / Serious / Critical
-    surgery = request.form.get('surgery')
-    eta = request.form.get('eta')
-    date = request.form.get('date')
-    time = request.form.get('time')
-
-    conn = get_db()
-
-    conn.execute(
-        """INSERT INTO patients
-        (name,age,symptoms,condition,emergency,surgery,eta,date,time)
-        VALUES (?,?,?,?,?,?,?,?,?)""",
-        (name,age,symptoms,condition,emergency,surgery,eta,date,time)
-    )
-
-    conn.commit()
-    conn.close()
-
-    return render_template("success.html", name=name)
-
-
-# DOCTOR DASHBOARD
 @app.route('/doctor')
 def doctor():
-
-    if not session.get('doctor_logged_in'):
+    if not session.get('doctor'):
         return redirect('/doctor_login')
-
     conn = get_db()
-    patients = conn.execute("SELECT * FROM patients ORDER BY id DESC").fetchall()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM patients ORDER BY id DESC")
+    patients = cursor.fetchall()
     conn.close()
+    return render_template('doctor.html', patients=patients)
 
-    return render_template("doctor.html", patients=patients)
-
-
-# DELETE PATIENT
-@app.route('/delete/<int:id>')
-def delete(id):
-
+@app.route('/reply/<int:id>', methods=['POST'])
+def reply(id):
+    if not session.get('doctor'):
+        return redirect('/doctor_login')
+    reply_text = request.form['reply']
     conn = get_db()
-    conn.execute("DELETE FROM patients WHERE id=?", (id,))
+    cursor = conn.cursor()
+    cursor.execute("UPDATE patients SET doctor_reply = ? WHERE id = ?", (reply_text, id))
     conn.commit()
     conn.close()
-
     return redirect('/doctor')
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    if not session.get('doctor'):
+        return redirect('/doctor_login')
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM patients WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+    return redirect('/doctor')
 
-# LOGOUT
 @app.route('/logout')
 def logout():
-
-    session.pop('doctor_logged_in', None)
-
+    session.pop('doctor', None)
     return redirect('/')
 
-
-# RUN
+# ✅ app.run() is always last
 if __name__ == '__main__':
     app.run(debug=True)

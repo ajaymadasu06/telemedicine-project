@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Patient Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+{% if patient is defined and patient %}
+
+<div class="form-container">
+    <h2>Patient Details</h2>
+    <p><b>Name:</b> {{ patient['name'] }}</p>
+    <p><b>Age:</b> {{ patient['age'] }}</p>
+    <p><b>Symptoms:</b> {{ patient['symptoms'] }}</p>
+    <p><b>Description:</b> {{ patient['description'] }}</p>
+    <p><b>Condition:</b> {{ patient['condition'] }}</p>
+    <p><b>Emergency:</b> {{ patient['emergency'] }}</p>
+    <p><b>Surgery:</b> {{ patient['surgery'] }}</p>
+    <p><b>ETA:</b> {{ patient['eta'] }}</p>
+    <p><b>Date:</b> {{ patient['date'] }}</p>
+    <p><b>Time:</b> {{ patient['time'] }}</p>
+</div>
+
+<div class="form-container" style="margin-top:20px; border-left: 5px solid #2c3e50;">
+    <h2>Doctor Instructions</h2>
+    {% if patient['doctor_reply'] %}
+        <p style="font-size:18px; color:#2c3e50;">{{ patient['doctor_reply'] }}</p>
+    {% else %}
+        <p style="color:gray;">No instructions yet. Please wait for the doctor to respond.</p>
+    {% endif %}
+</div>
+
+<div class="form-container" style="margin-top:10px;">
+    <a href="/track">Track Another Patient</a>
+    &nbsp;&nbsp;
+    <a href="/">Go Back Home</a>
+</div>
+
+{% else %}
+
+<!-- ✅ Safe fallback if patient is undefined -->
+<div class="form-container">
+    <h2>No Patient Found</h2>
+    <p>Please use the tracking form to look up a patient.</p>
+    <br>
+    <a href="/track">Go to Paramedic Portal</a>
+</div>
+
+{% endif %}
+
+</body>
+</html>

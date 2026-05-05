@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Paramedic Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="form-container">
+
+    <h2>Paramedic Portal</h2>
+    <p>Enter the patient tracking ID to view details and doctor instructions.</p>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form action="/track" method="POST">
+        <input type="text" name="tracking_id" placeholder="Enter Tracking ID" required>
+        <br><br>
+        <button type="submit">Get Instructions</button>
+    </form>
+
+    <br>
+    <a href="/">Go Back Home</a>
+
+</div>
+
+</body>
+</html>

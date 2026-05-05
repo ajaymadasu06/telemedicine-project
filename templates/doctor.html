@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <title>Doctor Dashboard</title>
@@ -69,14 +69,17 @@ background:#ffb3b3;
 {% for p in patients %}
 
 <tr class="
-{% if p['emergency']=='Critical' %}
+{% if p['condition']=='Critical' %}
 critical
-{% elif p['emergency']=='Serious' %}
+{% elif p['condition']=='Serious' %}
 serious
 {% else %}
 normal
 {% endif %}
 ">
+
+<!-- ✅ Fixed: was checking p['emergency'] for Critical/Serious/Normal
+     but emergency only holds Yes/No — correct field is p['condition'] -->
 
 <td>{{ p['name'] }}</td>
 <td>{{ p['age'] }}</td>
@@ -97,6 +100,28 @@ normal
 {% endfor %}
 
 </table>
+
+<h2>Patient Cases</h2>
+
+{% for p in patients %}
+<div style="border:1px solid #ccc; padding:10px; margin:10px;">
+    
+    <p><b>Name:</b> {{ p['name'] }}</p>
+    <p><b>Age:</b> {{ p['age'] }}</p>
+    <p><b>Condition:</b> {{ p['condition'] }}</p>
+
+    <form method="POST" action="/reply/{{ p['id'] }}">
+        <textarea name="reply" placeholder="Enter instructions..." required></textarea>
+        <br><br>
+        <button type="submit">Send Reply</button>
+    </form>
+
+    <p><b>Previous Reply:</b> 
+        {{ p['doctor_reply'] if p['doctor_reply'] else "No reply yet" }}
+    </p>
+
+</div>
+{% endfor %}
 
 </body>
 </html>

@@ -3,62 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <title>Patient Portal</title>
-
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 <body>
 
 <div class="form-container">
-
 <h2>Patient Emergency Form</h2>
 
-<form action="/submit_patient" method="POST">
+<form action="/patient" method="POST">
+    <input type="text" name="name" placeholder="Patient Name" required>
+    <input type="number" name="age" placeholder="Age" required>
+    <input type="text" name="symptoms" placeholder="Symptoms" required>
+    <textarea name="description" placeholder="Detailed Condition"></textarea>
 
-<input type="text" name="name" placeholder="Patient Name" required>
+    <select name="condition" required>
+        <option value="" disabled selected>Patient Condition</option>
+        <option value="Normal">Normal</option>
+        <option value="Serious">Serious</option>
+        <option value="Critical">Critical</option>
+    </select>
 
-<input type="number" name="age" placeholder="Age" required>
+    <select name="surgery" required>
+        <option value="" disabled selected>Surgery Required</option>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+        <option value="Not Sure">Not Sure</option>
+    </select>
 
-<input type="text" name="symptoms" placeholder="Symptoms" required>
+    <select name="eta" required>
+        <option value="" disabled selected>Ambulance Arrival Time</option>
+        <option value="10 Minutes">10 Minutes</option>
+        <option value="1 Hour">1 Hour</option>
+        <option value="More Than 1 Hour">More Than 1 Hour</option>
+    </select>
 
-<textarea name="condition" placeholder="Detailed Condition"></textarea>
+    <select name="emergency" required>
+        <option value="" disabled selected>Emergency</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+    </select>
 
-<select name="status">
-<option value="Normal">Normal</option>
-<option value="Serious">Serious</option>
-<option value="Critical">Critical</option>
-</select>
+    <input type="date" name="date">
+    <input type="time" name="time">
 
-<select name="surgery">
-<option value="No">No</option>
-<option value="Yes">Yes</option>
-<option value="Not Sure">Not Sure</option>
-</select>
-
-<select name="ambulance_time">
-<option value="10 Minutes">10 Minutes</option>
-<option value="20 Minutes">20 Minutes</option>
-<option value="30 Minutes">30 Minutes</option>
-</select>
-
-<label>Emergency:</label>
-<select name="emergency">
-<option value="Yes">Yes</option>
-<option value="No">No</option>
-</select>
-
-<input type="date" name="date">
-
-<input type="time" name="time">
-
-<button type="submit">Send Patient Data</button>
-
+    <button type="submit">Send Patient Data</button>
 </form>
+</div>
 
-<br>
+<!-- Patient Status Section -->
+<div class="status-container">
+<h2>Patient Status</h2>
 
-<a href="/">Go Back Home</a>
-
+{% if patients %}
+    {% for patient in patients %}
+    <div class="patient-card">
+        <p><b>Name:</b> {{ patient['name'] }}</p>
+        <p><b>Condition:</b> {{ patient['condition'] }}</p>
+        <p><b>Symptoms:</b> {{ patient['symptoms'] }}</p>
+        <p><b>Doctor Reply:</b> {{ patient['doctor_reply'] if patient['doctor_reply'] else "No reply yet" }}</p>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>No patients available</p>
+{% endif %}
 </div>
 
 </body>
